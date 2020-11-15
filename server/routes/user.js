@@ -1,111 +1,12 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const _ = require('underscore');
-
-const User = require('../models/user');
+const userController = require('../controllers/user');
 const { checkToken } = require('../middlewares/authentication');
 
 const app = express();
 
-app.get('/user', checkToken, (req, res) => {
-
-    let from = req.query.from || 0;
-    let limit = req.query.limit || 10;
-
-    User.find({ status: true })
-        .skip(Number(from))
-        .limit(Number(limit))
-        .exec((err, users) => {
-
-            if (err) {
-                return res.status(400).json({
-                    ok: false,
-                    err
-                });
-            }
-
-            User.countDocuments({ status: true }, (err, size) => {
-                res.json({
-                    ok: true,
-                    users,
-                    size
-                });
-            });
-        });
-});
-
-app.post('/user', checkToken, (req, res) => {
-    let body = req.body;
-
-    let user = new User({
-        name: body.name,
-        email: body.email,
-        password: bcrypt.hashSync(body.password, 10),
-        role: body.role
-    });
-
-    user.save((err, userStored) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        }
-
-        return res.json({
-            ok: true,
-            user: userStored
-        });
-    });
-});
-
-app.put('/user/:id', checkToken, (req, res) => {
-    let id = req.params.id;
-    let body = _.pick(req.body, ['name', 'email', 'img', 'role', 'status']);
-
-    User.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, userStored) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        }
-
-        return res.json({
-            ok: true,
-            user: userStored
-        });
-    });
-});
-
-app.delete('/user/:id', checkToken, (req, res) => {
-    let id = req.params.id;
-    let changeStatus = {
-        status: false
-    };
-
-    User.findByIdAndUpdate(id, changeStatus, { new: true }, (err, userDeleted) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        }
-
-        if (!userDeleted) {
-            return res.status(400).json({
-                ok: false,
-                err: {
-                    message: 'User not found'
-                }
-            });
-        }
-
-        res.json({
-            ok: true,
-            user: userDeleted
-        });
-    });
-});
+app.get('/user', checkToken, userController.list);
+app.post('/user', checkToken, userController.create);
+app.put('/user/:id', checkToken, userController.update);
+app.delete('/user/:id', checkToken, userController.remove);
 
 module.exports = app;
