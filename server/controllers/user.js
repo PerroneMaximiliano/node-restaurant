@@ -45,7 +45,7 @@ const create = async(req, res) => {
             });
         }
 
-        return res.json({
+        res.json({
             ok: true,
             user: userStored
         });
@@ -64,7 +64,7 @@ const update = async(req, res) => {
             });
         }
 
-        return res.json({
+        res.json({
             ok: true,
             user: userStored
         });

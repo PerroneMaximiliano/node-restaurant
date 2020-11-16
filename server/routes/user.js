@@ -1,7 +1,6 @@
 const express = require('express');
 const userController = require('../controllers/user');
 const { checkToken } = require('../middlewares/authentication');
-
 const app = express();
 
 app.get('/user', checkToken, userController.list);

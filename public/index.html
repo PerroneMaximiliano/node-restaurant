@@ -11,8 +11,8 @@
 
 <body>
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
-
     <a href="#" onclick="signOut();">Sign out</a>
+
     <script>
         function signOut() {
             var auth2 = gapi.auth2.getAuthInstance();
@@ -34,7 +34,7 @@
             console.log(id_token);
 
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/google');
+            xhr.open('POST', '/login-google');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function() {
                 console.log('Signed in as: ' + xhr.responseText);
