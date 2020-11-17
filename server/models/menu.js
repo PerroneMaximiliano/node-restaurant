@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 let Schema = mongoose.Schema;
-let articleSchema = new Schema({
+
+let menuSchema = new Schema({
     description: {
         type: String,
         required: [true, 'The description is required']
@@ -11,9 +12,9 @@ let articleSchema = new Schema({
         required: [true, 'The finished_time is required'],
     },
     price: {
-        type: Number,
+        type: String,
         required: [true, 'The price is required']
     }
 });
 
-module.exports = mongoose.model('Article', articleSchema);
+module.exports = mongoose.model('Menu', menuSchema);

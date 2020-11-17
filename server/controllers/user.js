@@ -12,7 +12,7 @@ const list = async(req, res) => {
         .exec((err, users) => {
 
             if (err) {
-                return res.status(400).json({
+                return res.status(500).json({
                     ok: false,
                     err
                 });
@@ -39,7 +39,7 @@ const create = async(req, res) => {
 
     user.save((err, userStored) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
@@ -79,7 +79,7 @@ const remove = async(req, res) => {
 
     User.findByIdAndUpdate(id, changeStatus, { new: true }, (err, userDeleted) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });

@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 let Schema = mongoose.Schema;
-let suppliesSchema = new Schema({
+
+let productSchema = new Schema({
     description: {
         type: String,
         required: [true, 'The description is required']
@@ -31,7 +32,11 @@ let suppliesSchema = new Schema({
     supplies: {
         type: Boolean,
         default: false
+    },
+    status: {
+        type: Boolean,
+        default: true
     }
 });
 
-module.exports = mongoose.model('Supplies', suppliesSchema);
+module.exports = mongoose.model('Product', productSchema);
