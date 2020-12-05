@@ -8,5 +8,6 @@ app.use(require('./register'));
 app.use(require('./product'));
 app.use(require('./menu'));
 app.use(require('./menuDetail'));
+app.use(require('./pdf-generator'));
 
 module.exports = app;
