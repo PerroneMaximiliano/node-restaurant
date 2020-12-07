@@ -1,4 +1,5 @@
 const Menu = require('../models/menu');
+const MenuDetail = require('../models/menuDetail');
 
 const list = async(req, res) => {
     Menu.find().exec((err, menus) => {
@@ -16,6 +17,40 @@ const list = async(req, res) => {
                 size
             });
         });
+    });
+};
+
+const getById = async(req, res) => {
+    let menuId = req.params.id;
+
+    Menu.findById(menuId).exec((err, menu) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        let menuSearchData = {
+            menu: menuId
+        };
+
+        MenuDetail.find(menuSearchData)
+            .populate('product', 'description')
+            .exec((errr, ingredients) => {
+                if (errr) {
+                    return res.status(500).json({
+                        ok: false,
+                        errr
+                    });
+                }
+
+                res.json({
+                    ok: true,
+                    menu,
+                    ingredients
+                });
+            });
     });
 };
 
@@ -43,5 +78,6 @@ const create = async(req, res) => {
 
 module.exports = {
     list,
-    create
+    create,
+    getById
 }
