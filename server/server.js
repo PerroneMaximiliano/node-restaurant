@@ -10,10 +10,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static(path.resolve(__dirname, '../public')));
 
-mongoDBConnection();
-
 app.use(require('./routes/index'));
 
 app.listen(process.env.PORT, () => {
     console.log("Listening requests in the port 3000");
+    mongoDBConnection();
 });

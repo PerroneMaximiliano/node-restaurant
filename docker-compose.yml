@@ -1,12 +1,14 @@
-version: "2"
+version: "3"
 services:
   web:
-    image: "buensabor/node-web-app"
+    container_name: backend
+    image: "buensabor:v1"
     ports:
-      - "8080:8080"
+      - 3000:3000
     depends_on:
       - mongo
   mongo:
+    container_name: mongo
     image: "mongo"
     ports:
-      - "27017:27017"
+      - 27017:27017
