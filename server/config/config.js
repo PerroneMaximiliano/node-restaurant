@@ -1,4 +1,5 @@
-process.env.MONGO_DB = 'mongodb://mongo:27017/restaurant'
+//process.env.MONGO_DB = 'mongodb://mongo:27017/restaurant'
+process.env.MONGO_DB = 'mongodb://localhost:27017/restaurant'
 
 process.env.PORT = process.env.PORT || 3000
 

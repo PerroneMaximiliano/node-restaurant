@@ -4,7 +4,7 @@ const { checkToken } = require('../middlewares/authentication');
 const app = express();
 
 app.get('/user', checkToken, userController.list);
-app.post('/user', checkToken, userController.create);
+app.post('/user', userController.create);
 app.put('/user/:id', checkToken, userController.update);
 app.delete('/user/:id', checkToken, userController.remove);
 
