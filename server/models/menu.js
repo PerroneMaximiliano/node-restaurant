@@ -14,7 +14,11 @@ let menuSchema = new Schema({
     price: {
         type: String,
         required: [true, 'The price is required']
-    }
+    },
+    img: {
+        type: String,
+        required: [false]
+    },
 });
 
 module.exports = mongoose.model('Menu', menuSchema);
