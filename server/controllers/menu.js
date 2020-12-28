@@ -54,12 +54,38 @@ const getById = async(req, res) => {
     });
 };
 
+const getByCategory = async(req, res) => {
+    let menuCategory = req.params.category;
+    let menuSearchData = {
+        status: true,
+        category: menuCategory
+    };
+
+    Menu.find(menuSearchData).exec((err, menus) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        Menu.countDocuments((err, size) => {
+            res.json({
+                ok: true,
+                menus,
+                size
+            });
+        });
+    });
+};
+
 const create = async(req, res) => {
     let body = req.body;
     let menu = new Menu({
         description: body.description,
         finished_time: body.finished_time,
-        price: body.price
+        price: body.price,
+        category: body.category
     });
 
     menu.save((err, menuStored) => {
@@ -79,5 +105,6 @@ const create = async(req, res) => {
 module.exports = {
     list,
     create,
-    getById
+    getById,
+    getByCategory
 }
