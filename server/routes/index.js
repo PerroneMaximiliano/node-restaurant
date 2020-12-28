@@ -11,5 +11,6 @@ app.use(require('./menuDetail'));
 app.use(require('./pdf-generator'));
 app.use(require('./upload'));
 app.use(require('./image'));
+app.use(require('./menuCategories'));
 
 module.exports = app;

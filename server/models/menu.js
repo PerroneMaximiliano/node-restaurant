@@ -19,6 +19,11 @@ let menuSchema = new Schema({
         type: String,
         required: [false]
     },
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'MenuCategories',
+        required: true
+    },
 });
 
 module.exports = mongoose.model('Menu', menuSchema);

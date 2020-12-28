@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Menu = require('../models/menu');
+const MenuCategories = require('../models/menuCategories');
 const fs = require('fs');
 const path = require('path');
 
@@ -16,7 +17,7 @@ const upload = async(req, res) => {
 
     let type = req.params.type;
     let id = req.params.id;
-    const validTypes = ['users', 'menus'];
+    const validTypes = ['users', 'menus', 'menu-categories'];
     if (validTypes.indexOf(type) < 0) {
         return res.json({
             ok: true,
@@ -52,10 +53,18 @@ const upload = async(req, res) => {
             });
         }
 
-        if (type === 'users') {
-            userImage(id, res, fileNameToSave);
-        } else {
-            menuImage(id, res, fileNameToSave);
+        switch (type) {
+            case 'users':
+                userImage(id, res, fileNameToSave);
+                break;
+            case 'menus':
+                menuImage(id, res, fileNameToSave);
+                break;
+            case 'menu-categories':
+                menuCategoryImage(id, res, fileNameToSave);
+                break;
+            default:
+                break;
         }
     });
 };
@@ -76,12 +85,12 @@ function userImage(id, res, fileNameToSave) {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'Usuario no existe'
+                    message: 'Usuario do not exist'
                 }
             });
         }
 
-        deleteImg('users', fileNameToSave);
+        deleteImg('users', userDB.img);
         userDB.img = fileNameToSave;
 
         userDB.save((err, userStored) => {
@@ -108,7 +117,7 @@ function menuImage(id, res, fileNameToSave) {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'Menu no existe'
+                    message: 'Menu do not exist'
                 }
             });
         }
@@ -120,6 +129,38 @@ function menuImage(id, res, fileNameToSave) {
             return res.json({
                 ok: true,
                 menu: menuStored
+            });
+        });
+    });
+}
+
+function menuCategoryImage(id, res, fileNameToSave) {
+    MenuCategories.findById(id, (err, menuCategoryDB) => {
+        if (err) {
+            deleteImg('menu-categories', fileNameToSave);
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        if (!menuCategoryDB) {
+            deleteImg('menu-categories', fileNameToSave);
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'Menu category do not exist'
+                }
+            });
+        }
+
+        deleteImg('menu-categories', menuCategoryDB.img);
+        menuCategoryDB.img = fileNameToSave;
+
+        menuCategoryDB.save((err, menuCategoryStored) => {
+            return res.json({
+                ok: true,
+                menuCategory: menuCategoryStored
             });
         });
     });
