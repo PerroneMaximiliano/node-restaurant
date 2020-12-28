@@ -19,6 +19,32 @@ const list = async(req, res) => {
     });
 };
 
+const getByCategory = async(req, res) => {
+
+    let productCategory = req.params.category;
+    let productSearchData = {
+        status: true,
+        category: productCategory
+    };
+
+    Product.find(productSearchData).exec((err, products) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        Product.countDocuments((err, size) => {
+            res.json({
+                ok: true,
+                products,
+                size
+            });
+        });
+    });
+};
+
 const create = async(req, res) => {
     let body = req.body;
     let product = new Product({
@@ -29,7 +55,8 @@ const create = async(req, res) => {
         min_stock: body.min_stock,
         unit_measurement: body.unit_measurement,
         supplies: body.supplies,
-        status: true
+        status: true,
+        category: body.category
     });
 
     product.save((err, productStored) => {
@@ -48,8 +75,8 @@ const create = async(req, res) => {
 
 const update = async(req, res) => {
     let id = req.params.id;
-    let body = _.pick(req.body, ['description', 'purchase_price', 'sale_price',
-        'current_stock', 'min_stock'
+    let body = _.pick(req.body, ['description', 'purchase_price',
+        'sale_price', 'current_stock', 'min_stock', 'category'
     ]);
 
     Product.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, userStored) => {
@@ -101,5 +128,6 @@ module.exports = {
     list,
     create,
     update,
-    remove
+    remove,
+    getByCategory
 }

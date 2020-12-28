@@ -12,5 +12,6 @@ app.use(require('./pdf-generator'));
 app.use(require('./upload'));
 app.use(require('./image'));
 app.use(require('./menuCategories'));
+app.use(require('./productCategories'));
 
 module.exports = app;

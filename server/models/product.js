@@ -36,6 +36,11 @@ let productSchema = new Schema({
     status: {
         type: Boolean,
         default: true
+    },
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'ProductCategories',
+        required: false
     }
 });
 
