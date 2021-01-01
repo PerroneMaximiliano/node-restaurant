@@ -1,7 +1,7 @@
 const Product = require('../models/product');
 
 const list = async(req, res) => {
-    Product.find().exec((err, products) => {
+    Product.find({ status: true }).exec((err, products) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
@@ -9,7 +9,7 @@ const list = async(req, res) => {
             });
         }
 
-        Product.countDocuments((err, size) => {
+        Product.countDocuments({ status: true }, (err, size) => {
             res.json({
                 ok: true,
                 products,
