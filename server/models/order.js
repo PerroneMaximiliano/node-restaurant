@@ -8,9 +8,9 @@ let status = {
 };
 
 let orderSchema = new Schema({
-    startDate: {
+    orderDate: {
         type: String,
-        required: [true, 'The start date is required']
+        required: [true, 'The order date is required']
     },
     endDate: {
         type: String,
@@ -32,6 +32,11 @@ let orderSchema = new Schema({
     client: {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        required: true
+    },
+    bill: {
+        type: Schema.Types.ObjectId,
+        ref: 'Bill',
         required: true
     }
 });

@@ -22,7 +22,7 @@ const list = async(req, res) => {
 const create = async(req, res) => {
     let body = req.body;
     let order = new Order({
-        startDate: body.startDate,
+        orderDate: body.orderDate,
         endDate: body.endDate,
         number: body.number,
         status: body.status,

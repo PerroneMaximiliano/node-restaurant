@@ -15,5 +15,6 @@ app.use(require('./menuCategories'));
 app.use(require('./productCategories'));
 app.use(require('./order'));
 app.use(require('./orderDetail'));
+app.use(require('./bill'));
 
 module.exports = app;
