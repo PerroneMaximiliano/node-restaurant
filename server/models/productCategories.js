@@ -12,6 +12,10 @@ let productCategoriesSchema = new Schema({
         ref: "ProductCategories",
         required: false
     },
+    img: {
+        type: String,
+        required: [false]
+    },
     status: {
         type: Boolean,
         default: true

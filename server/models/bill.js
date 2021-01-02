@@ -35,8 +35,8 @@ let billSchema = new Schema({
     },
     status: {
         type: String,
-        default: 'PENDING',
-        enum: status
+        default: 'PENDING'
+            //enum: status
     }
 });
 

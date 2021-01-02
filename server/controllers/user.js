@@ -107,7 +107,6 @@ const search = async(req, res) => {
 
     User.find({ $or: [{ name: regExWords }, { email: regExWords }] })
         .exec((err, users) => {
-
             if (err) {
                 return res.status(500).json({
                     ok: false,
