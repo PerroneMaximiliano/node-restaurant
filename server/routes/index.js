@@ -16,5 +16,7 @@ app.use(require('./productCategories'));
 app.use(require('./order'));
 app.use(require('./orderDetail'));
 app.use(require('./bill'));
+app.use(require('./configuration'));
+app.use(require('./email'));
 
 module.exports = app;

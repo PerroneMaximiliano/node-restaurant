@@ -8,9 +8,9 @@ let payments = {
 };
 
 let billSchema = new Schema({
-    orderDate: {
+    date: {
         type: String,
-        required: [true, 'The order date is required']
+        required: [true, 'The date is required']
     },
     number: {
         type: Number,

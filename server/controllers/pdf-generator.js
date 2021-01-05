@@ -1,4 +1,5 @@
 const pdf = require('html-pdf');
+const emailController = require('../controllers/email');
 
 const create = async(req, res) => {
     let body = req.body;
@@ -56,14 +57,14 @@ const create = async(req, res) => {
 
     pdf.create(contenido, options).toFile('./pdfs/' + body.nombre + '.pdf', function(err, resPDF) {
         if (err) {
-            console.log(err);
-        } else {
-            console.log(resPDF);
-            res.json({
-                ok: true,
-                mensaje: "Se genero la factura en formato pdf"
+            return res.status(500).json({
+                ok: false,
+                err
             });
         }
+
+        req.body.pdf = resPDF;
+        emailController.send(req, res);
     });
 };
 

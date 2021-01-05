@@ -123,6 +123,36 @@ function saveOrderDetail(orderId, detail, flag) {
     orderDetail.save();
 }
 
+/*
+        for (let food of orderFoods) {
+            const body = {
+                current_stock: food.product.current_stock - food.quantity
+            };
+            Product.findByIdAndUpdate(food.product._id, body, { new: true, runValidators: true }, (err, orderStored) => {
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        err
+                    });
+                }
+            });
+        }
+
+        for (let drink of orderDrinks) {
+            const body = {
+                current_stock: drink.currentStock - drink.quantity
+            };
+            Product.findByIdAndUpdate(drink.id, body, { new: true, runValidators: true }, (err, orderStored) => {
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        err
+                    });
+                }
+            });
+        }
+        */
+
 const update = async(req, res) => {
     const id = req.params.id;
     const status = req.body.status;

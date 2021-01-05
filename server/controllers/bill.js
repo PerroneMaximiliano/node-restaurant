@@ -22,7 +22,7 @@ const list = async(req, res) => {
 const create = async(req, res) => {
     let body = req.body;
     let bill = new Bill({
-        orderDate: body.orderDate,
+        date: body.date,
         number: body.number,
         discount: body.discount,
         total: body.total,
@@ -39,6 +39,7 @@ const create = async(req, res) => {
                 err
             });
         }
+
         res.json({
             ok: true,
             bill: billStored
@@ -48,7 +49,7 @@ const create = async(req, res) => {
 
 const update = async(req, res) => {
     let id = req.params.id;
-    let body = _.pick(req.body, ['orderDate', 'number', 'discount',
+    let body = _.pick(req.body, ['date', 'number', 'discount',
         'total', 'paymentType', 'nroCard', 'status', 'order'
     ]);
 
