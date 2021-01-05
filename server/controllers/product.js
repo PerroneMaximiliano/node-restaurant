@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const _ = require('underscore');
 
 const list = async(req, res) => {
     Product.find({ status: true }).exec((err, products) => {
@@ -78,7 +79,7 @@ const update = async(req, res) => {
     let body = _.pick(req.body, ['description', 'purchase_price',
         'sale_price', 'current_stock', 'min_stock', 'category'
     ]);
-
+    console.log(body);
     Product.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, userStored) => {
         if (err) {
             return res.status(400).json({

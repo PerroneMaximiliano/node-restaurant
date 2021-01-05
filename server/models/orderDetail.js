@@ -7,10 +7,6 @@ let orderDetailSchema = new Schema({
         type: Number,
         required: [true, 'The quantity is required']
     },
-    description: {
-        type: String,
-        required: [true, 'The description is required']
-    },
     subTotal: {
         type: Number,
         required: [true, 'The subtotal is required'],
@@ -23,7 +19,17 @@ let orderDetailSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Order',
         required: true
-    }
+    },
+    menu: {
+        type: Schema.Types.ObjectId,
+        ref: 'Menu',
+        required: false
+    },
+    product: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+        required: false
+    },
 });
 
 module.exports = mongoose.model('OrderDetail', orderDetailSchema);

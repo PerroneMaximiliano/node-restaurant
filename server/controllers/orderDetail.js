@@ -9,7 +9,7 @@ const list = async(req, res) => {
             });
         }
 
-        Order.countDocuments({ status: true }, (err, size) => {
+        OrderDetail.countDocuments({ status: true }, (err, size) => {
             res.json({
                 ok: true,
                 orderDetails,
@@ -23,7 +23,6 @@ const create = async(req, res) => {
     let body = req.body;
     let orderDetail = new OrderDetail({
         quantity: body.quantity,
-        description: body.description,
         subTotal: body.subTotal,
         status: body.status,
         order: body.order
@@ -45,7 +44,7 @@ const create = async(req, res) => {
 
 const update = async(req, res) => {
     let id = req.params.id;
-    let body = _.pick(req.body, ['quantity', 'description',
+    let body = _.pick(req.body, ['quantity',
         'subTotal', 'status', 'order'
     ]);
 

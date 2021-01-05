@@ -6,6 +6,6 @@ const app = express();
 app.get('/menu', menuController.list);
 app.get('/menu/:id', menuController.getById);
 app.get('/menu/category/:category', menuController.getByCategory);
-app.post('/menu', [checkToken, checkAdminRole], menuController.create);
+app.post('/menu', menuController.create);
 
 module.exports = app;

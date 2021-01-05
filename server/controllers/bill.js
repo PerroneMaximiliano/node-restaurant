@@ -28,7 +28,8 @@ const create = async(req, res) => {
         total: body.total,
         paymentType: body.paymentType,
         nroCard: body.nroCard,
-        status: body.status
+        status: body.status,
+        order: body.order
     });
 
     bill.save((err, billStored) => {
@@ -48,7 +49,7 @@ const create = async(req, res) => {
 const update = async(req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ['orderDate', 'number', 'discount',
-        'total', 'paymentType', 'nroCard', 'status'
+        'total', 'paymentType', 'nroCard', 'status', 'order'
     ]);
 
     Bill.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, billStored) => {

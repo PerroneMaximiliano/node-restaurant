@@ -29,14 +29,9 @@ let orderSchema = new Schema({
         type: Number,
         required: [true, 'The shipping type is required']
     },
-    client: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
-    },
-    bill: {
-        type: Schema.Types.ObjectId,
-        ref: 'Bill',
         required: true
     }
 });

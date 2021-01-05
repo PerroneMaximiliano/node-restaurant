@@ -34,9 +34,13 @@ let billSchema = new Schema({
         required: [true, 'The number card is required']
     },
     status: {
-        type: String,
-        default: 'PENDING'
-            //enum: status
+        type: Boolean,
+        default: true
+    },
+    order: {
+        type: Schema.Types.ObjectId,
+        ref: 'Order',
+        required: true
     }
 });
 
