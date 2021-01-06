@@ -33,7 +33,12 @@ let orderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+    details: [{
+        type: Schema.Types.ObjectId,
+        ref: 'OrderDetail',
+        required: false
+    }]
 });
 
 module.exports = mongoose.model('Order', orderSchema);

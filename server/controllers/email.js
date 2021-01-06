@@ -27,8 +27,8 @@
               subject: 'Comprobante de compra El buen sabor',
               text: 'Gracias por su compra.',
               attachments: [{
-                  filename: 'file.pdf',
-                  path: path.resolve(__dirname, `../../pdfs/${ body.nombre }.pdf`),
+                  filename: body.billNumber + '.pdf',
+                  path: path.resolve(__dirname, `../../pdfs/${ body.billNumber }.pdf`),
                   contentType: 'application/pdf'
               }],
           };
@@ -42,7 +42,8 @@
               }
               res.json({
                   ok: true,
-                  detail: 'Email sent: ' + info.response
+                  detail: 'Email sent: ' + info.response,
+                  message: 'Se genero la factura correctamente'
               });
           });
       });

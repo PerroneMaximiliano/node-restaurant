@@ -1,4 +1,5 @@
 const Bill = require('../models/bill');
+const pdfController = require('../controllers/pdf-generator');
 
 const list = async(req, res) => {
     Bill.find({ status: true }).exec((err, bills) => {
@@ -20,31 +21,37 @@ const list = async(req, res) => {
 };
 
 const create = async(req, res) => {
-    let body = req.body;
-    let bill = new Bill({
-        date: body.date,
-        number: body.number,
-        discount: body.discount,
-        total: body.total,
-        paymentType: body.paymentType,
-        nroCard: body.nroCard,
-        status: body.status,
-        order: body.order
-    });
-
-    bill.save((err, billStored) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                err
-            });
-        }
-
-        res.json({
-            ok: true,
-            bill: billStored
+    try {
+        let body = req.body;
+        const billNumber = `${body.order}-${new Date().getMilliseconds()}`;
+        let bill = new Bill({
+            date: body.date,
+            number: billNumber,
+            discount: body.discount,
+            total: body.total,
+            paymentType: body.paymentType,
+            nroCard: body.nroCard,
+            status: true,
+            order: body.order
         });
-    });
+
+        bill.save((err, billStored) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            req.body.billNumber = billNumber;
+            pdfController.create(req, res);
+        });
+    } catch (err) {
+        return res.status(500).json({
+            ok: false,
+            err
+        });
+    }
 };
 
 const update = async(req, res) => {

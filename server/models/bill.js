@@ -13,7 +13,7 @@ let billSchema = new Schema({
         required: [true, 'The date is required']
     },
     number: {
-        type: Number,
+        type: String,
         required: [true, 'The number order is required'],
     },
     discount: {

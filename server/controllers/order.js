@@ -11,12 +11,14 @@ const list = async(req, res) => {
             status
         }
     }
-    Order.find(filterStatus).exec((err, orders) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                err
+
+    try {
+        let orders = await Order.find(filterStatus);
+        for (let order of orders) {
+            const orderDetails = await OrderDetail.find({
+                order: order._id
             });
+            order.details = orderDetails;
         }
 
         Order.countDocuments({ status }).exec((err, size) => {
@@ -26,7 +28,12 @@ const list = async(req, res) => {
                 size
             });
         });
-    });
+    } catch (err) {
+        return res.status(500).json({
+            ok: false,
+            err
+        });
+    }
 };
 
 const create = async(req, res) => {
