@@ -40,9 +40,6 @@ const create = async(req, res) => {
     let body = req.body;
 
     try {
-        let orderFoods = [];
-        let orderDrinks = [];
-
         for (const food of body.foods) {
             const menuDetailData = await MenuDetail.find({ menu: food.id })
                 .populate('menu', 'description')
@@ -57,7 +54,6 @@ const create = async(req, res) => {
                         }
                     });
                 }
-                orderFoods.push(menuDetail);
             }
         }
 
@@ -71,13 +67,6 @@ const create = async(req, res) => {
                     }
                 });
             }
-
-            const merged = {
-                id: productData._id,
-                currentStock: productData.current_stock,
-                quantity: drink.quantity
-            }
-            orderDrinks.push(merged);
         }
 
         let order = new Order({
@@ -125,44 +114,34 @@ function saveOrderDetail(orderId, detail, flag) {
         status: true,
         order: orderId
     });
-    console.log(orderDetail);
     flag ? orderDetail.menu = detail.id : orderDetail.product = detail.id;
     orderDetail.save();
 }
 
-/*
-        for (let food of orderFoods) {
-            const body = {
-                current_stock: food.product.current_stock - food.quantity
-            };
-            Product.findByIdAndUpdate(food.product._id, body, { new: true, runValidators: true }, (err, orderStored) => {
-                if (err) {
-                    return res.status(400).json({
-                        ok: false,
-                        err
-                    });
-                }
-            });
-        }
-
-        for (let drink of orderDrinks) {
-            const body = {
-                current_stock: drink.currentStock - drink.quantity
-            };
-            Product.findByIdAndUpdate(drink.id, body, { new: true, runValidators: true }, (err, orderStored) => {
-                if (err) {
-                    return res.status(400).json({
-                        ok: false,
-                        err
-                    });
-                }
-            });
-        }
-        */
-
 const update = async(req, res) => {
     const id = req.params.id;
     const status = req.body.status;
+
+    if (status === 'FINISHED') {
+        const orderDetails = await OrderDetail.find({ order: id })
+            .populate('product', 'current_stock');
+        for (let detail of orderDetails) {
+            if (detail.product != null) {
+                let drink = detail.product;
+                drink.current_stock = drink.current_stock - detail.quantity;
+                drink.save();
+            } else if (detail.menu != null) {
+                const menuDetails = await MenuDetail.find({ menu: detail.menu })
+                    .populate('product', 'current_stock');
+                for (let menu of menuDetails) {
+                    let food = menu.product;
+                    food.current_stock = food.current_stock - (detail.quantity * menu.quantity);
+                    food.save();
+                }
+            }
+        }
+    }
+
     Order.findByIdAndUpdate(id, { status }, { new: true, runValidators: true }, (err, orderStored) => {
         if (err) {
             return res.status(400).json({
