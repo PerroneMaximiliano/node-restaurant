@@ -30,7 +30,7 @@ const create = async(req, res) => {
                             err
                         });
                     }
-                    req.body.pdf = resPDF;
+
                     emailController.send(req, res);
                 });
         });

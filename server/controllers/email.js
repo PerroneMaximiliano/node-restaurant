@@ -43,7 +43,7 @@
               res.json({
                   ok: true,
                   detail: 'Email sent: ' + info.response,
-                  message: 'Se genero la factura correctamente'
+                  message: 'Se envio la factura correctamente'
               });
           });
       });

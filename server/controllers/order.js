@@ -21,7 +21,7 @@ const list = async(req, res) => {
             order.details = orderDetails;
         }
 
-        Order.countDocuments({ status }).exec((err, size) => {
+        Order.countDocuments(filterStatus).exec((err, size) => {
             res.json({
                 ok: true,
                 orders,
