@@ -93,9 +93,39 @@ const remove = async(req, res) => {
     });
 };
 
+const rank = async(req, res) => {
+    OrderDetail.find({ status: true, menu: { $ne: null } })
+        .populate('menu description')
+        .exec((err, details) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            var result = [];
+            details.reduce(function(res, value) {
+                if (!res[value.menu._id]) {
+                    res[value.menu._id] = { menu: value.menu._id, quantity: 0, description: value.menu.description };
+                    result.push(res[value.menu._id])
+                }
+                res[value.menu._id].quantity += value.quantity;
+                return res;
+            }, {});
+
+            res.json({
+                ok: true,
+                result: result.sort((a, b) => b.quantity - a.quantity),
+                size: result.length
+            });
+        });
+};
+
 module.exports = {
     list,
     create,
     update,
-    remove
+    remove,
+    rank
 }
